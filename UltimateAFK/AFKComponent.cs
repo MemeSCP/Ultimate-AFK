@@ -8,6 +8,7 @@ using Exiled.Loader;
 using PlayableScps;
 using System.Reflection;
 using Exiled.API.Enums;
+using Exiled.API.Features.Roles;
 
 namespace UltimateAFK
 {
@@ -67,7 +68,7 @@ namespace UltimateAFK
         {
             if (plugin.Config.EnableDebugLog)
                 Log.Info($"AFK Time: {this.AFKTime} AFK Count: {this.AFKCount}");
-            if (ply.Team == Team.RIP || Player.List.Count() < plugin.Config.MinPlayers || (plugin.Config.IgnoreTut && ply.Team == Team.TUT)) return;
+            if (ply.Role.Team == Team.RIP || Player.List.Count() < plugin.Config.MinPlayers || (plugin.Config.IgnoreTut && ply.Role.Team == Team.TUT)) return;
 
             bool isScp079 = (ply.Role == RoleType.Scp079);
             bool scp096TryNotToCry = false;
@@ -80,8 +81,8 @@ namespace UltimateAFK
                 scp096TryNotToCry = (scp096.PlayerState == Scp096PlayerState.TryNotToCry);
             }
 
-            Vector3 CurrentPos = ply.Position;
-            Vector3 CurrentAngle = (isScp079) ? ply.Camera.targetPosition.position : ply.Rotation;
+            var CurrentPos = ply.Position;
+            var CurrentAngle = (isScp079) ? ((Scp079Role) ply.Role).Camera.Position : new Vector3(ply.Rotation.x, ply.Rotation.y); 
 
             if (CurrentPos != AFKLastPosition || CurrentAngle != AFKLastAngle || scp096TryNotToCry)
             {
@@ -119,7 +120,7 @@ namespace UltimateAFK
             AFKTime = 0;
 
             // Let's make sure they are still alive before doing any replacement.
-            if (ply.Team == Team.RIP) return;
+            if (ply.Role.Team == Team.RIP) return;
 
             if (plugin.Config.TryReplace && !IsPastReplaceTime())
             {
@@ -154,9 +155,10 @@ namespace UltimateAFK
                 float Exp079 = 0f, AP079 = 0f;
                 if (isScp079)
                 {
-                    Level079 = ply.Level;
-                    Exp079 = ply.Experience;
-                    AP079 = ply.Energy;
+                    var plyRole = ply.Role as Scp079Role;
+                    Level079 = plyRole.Level;
+                    Exp079 = plyRole.Experience;
+                    AP079 = plyRole.Energy;
                 }
 
                 PlayerToReplace = Player.List.FirstOrDefault(x => x.Role == RoleType.Spectator && x.UserId != string.Empty && !x.IsOverwatchEnabled && x != ply);
@@ -196,9 +198,10 @@ namespace UltimateAFK
 
                         if (isScp079)
                         {
-                            PlayerToReplace.Level = Level079;
-                            PlayerToReplace.Experience = Exp079;
-                            PlayerToReplace.Energy = AP079;
+                            var plyRole = ply.Role as Scp079Role;
+                            plyRole.Level = Level079;
+                            plyRole.Experience = Exp079;
+                            plyRole.Energy = AP079;
                         }
 
                         PlayerToReplace.Broadcast(10, $"{plugin.Config.MsgPrefix} {plugin.Config.MsgReplace}");

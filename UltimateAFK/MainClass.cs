@@ -48,14 +48,14 @@ namespace UltimateAFK
 {
     public class MainClass : Plugin<Config>
     {
-        public override string Author { get; } = "Thomasjosif";
-        public override string Name { get; } = "Ultimate AFK";
-        public override string Prefix { get; } = "uAFK";
+        public override string Author => "Thomasjosif";
+        public override string Name => "Ultimate AFK";
+        public override string Prefix => "uAFK";
         public override Version Version { get; } = new Version(3, 2, 1);
         public override Version RequiredExiledVersion { get; } = new Version(3,2,1);
         public PlayerEvents PlayerEvents;
 
-        public override PluginPriority Priority { get; } = PluginPriority.Medium;
+        public override PluginPriority Priority => PluginPriority.Medium;
 
         public override void OnEnabled()
         {
