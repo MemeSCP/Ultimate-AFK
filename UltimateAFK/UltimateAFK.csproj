@@ -24,6 +24,5 @@
     <Reference Include="Mirror" HintPath="$(EXILED_REFERENCES)\Mirror.dll" Private="false" />
     <Reference Include="UnityEngine" HintPath="$(EXILED_REFERENCES)\UnityEngine.dll" Private="false" />
     <Reference Include="UnityEngine.CoreModule" HintPath="$(EXILED_REFERENCES)\UnityEngine.CoreModule.dll" Private="false" />
-    <Reference Include="scp035" HintPath="$(EXILED_REFERENCES)\Scp035.dll" Private="false" />
   </ItemGroup>
 </Project>
