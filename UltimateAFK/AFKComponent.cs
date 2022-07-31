@@ -1,13 +1,9 @@
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using MEC;
 using Exiled.API.Features;
-using Exiled.Loader;
 using PlayableScps;
-using System.Reflection;
-using Exiled.API.Enums;
 using Exiled.API.Features.Roles;
 
 namespace UltimateAFK
@@ -29,9 +25,6 @@ namespace UltimateAFK
 
         // Do not change this delay. It will screw up the detection
         public float delay = 1.0f;
-
-        private IEnumerable<Player> TryGet035() => Scp035.API.AllScp035;
-        private void TrySpawn035(Player player) => Scp035.API.Spawn035(player);
 
         // Expose replacing player for plugin support
         public Player PlayerToReplace;
@@ -124,21 +117,6 @@ namespace UltimateAFK
 
             if (plugin.Config.TryReplace && !IsPastReplaceTime())
             {
-                Assembly easyEvents = Loader.Plugins.FirstOrDefault(pl => pl.Name == "EasyEvents")?.Assembly;
-
-                var roleEasyEvents = easyEvents?.GetType("EasyEvents.Util")?.GetMethod("GetRole")?.Invoke(null, new object[] { ply });
-
-                // SCP035 Support (Credit DCReplace)
-                bool is035 = false;
-                try
-                {
-                    is035 = TryGet035()?.Contains(ply) ?? false;
-                }
-                catch (Exception e)
-                {
-                    Log.Debug($"SCP-035 is not installed, skipping method call: {e}");
-                }
-
                 // Credit: DCReplace :)
                 // I mean at this point 90% of this has been rewritten lol...
                 var inventory = ply.Items.ToList();
@@ -173,17 +151,6 @@ namespace UltimateAFK
 
                     Timing.CallDelayed(0.3f, () =>
                     {
-                        if (is035)
-                        {
-                            try
-                            {
-                                TrySpawn035(PlayerToReplace);
-                            }
-                            catch (Exception e)
-                            {
-                                Log.Debug($"SCP-035 is not installed, skipping method call: {e}");
-                            }
-                        }
                         PlayerToReplace.Position = pos;
 
                         PlayerToReplace.ClearInventory();
@@ -205,7 +172,6 @@ namespace UltimateAFK
                         }
 
                         PlayerToReplace.Broadcast(10, $"{plugin.Config.MsgPrefix} {plugin.Config.MsgReplace}");
-						if (roleEasyEvents != null) easyEvents?.GetType("EasyEvents.CustomRoles")?.GetMethod("ChangeRole")?.Invoke(null, new object[] { PlayerToReplace, roleEasyEvents });
                         PlayerToReplace = null;
                     });
                 }
