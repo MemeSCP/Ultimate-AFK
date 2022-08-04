@@ -156,7 +156,8 @@ namespace UltimateAFK
                         PlayerToReplace.ClearInventory();
                         PlayerToReplace.ResetInventory(inventory);
 
-                        PlayerToReplace.Health = health;
+                        if (health > 0)
+                            PlayerToReplace.Health = health;
                         
                         foreach (var ammoPair in ammoHolder)
                         {
