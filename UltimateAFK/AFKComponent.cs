@@ -75,7 +75,7 @@ namespace UltimateAFK
             }
 
             var CurrentPos = ply.Position;
-            var CurrentAngle = (isScp079) ? ((Scp079Role) ply.Role).Camera.Position : new Vector3(ply.Rotation.x, ply.Rotation.y); 
+            var CurrentAngle = (isScp079) ? ((Scp079Role) ply.Role).Camera.HeadRotation.eulerAngles : new Vector3(ply.Rotation.x, ply.Rotation.y); 
 
             if (CurrentPos != AFKLastPosition || CurrentAngle != AFKLastAngle || scp096TryNotToCry)
             {
