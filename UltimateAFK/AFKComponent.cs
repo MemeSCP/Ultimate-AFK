@@ -1,4 +1,7 @@
-using System;
+
+//DEPRECATED: See UAFKPlayer.cs
+
+/*using System;
 using System.Linq;
 using UnityEngine;
 using MEC;
@@ -220,3 +223,4 @@ namespace UltimateAFK
         }
     }
 }
+*/

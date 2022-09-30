@@ -1,9 +1,8 @@
 ﻿namespace UltimateAFK
 {
     using System.ComponentModel;
-    using Exiled.API.Interfaces;
 
-    public sealed class Config : IConfig
+    public sealed class Config
     {
         [Description("Is the plugin enabled?")]
         public bool IsEnabled { get; set; } = true;
