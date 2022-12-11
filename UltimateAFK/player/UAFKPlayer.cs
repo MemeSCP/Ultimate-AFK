@@ -89,7 +89,7 @@ namespace UltimateAFK.player
             var secUntilReplacing = _plugin.pluginConfig.AfkTime + _plugin.pluginConfig.GraceTime - _afkTime;
             if (secUntilReplacing > 0)
             {
-                this.PBroadcast($"{_plugin.pluginConfig.MsgPrefix} {_plugin.pluginConfig.MsgGrace.Replace("%timeleft%", secUntilReplacing.ToString())}", 1, true);
+                SendBroadcast($"{_plugin.pluginConfig.MsgPrefix} {_plugin.pluginConfig.MsgGrace.Replace("%timeleft%", secUntilReplacing.ToString())}", 1, Broadcast.BroadcastFlags.Normal, true);
                 return;
             }
 
@@ -106,7 +106,7 @@ namespace UltimateAFK.player
             
             this.ClearInventory();
             SetRole(RoleTypeId.Spectator);
-            this.PBroadcast($"{_plugin.pluginConfig.MsgPrefix} {_plugin.pluginConfig.MsgFspec}", 10, true);
+            this.SendBroadcast($"{_plugin.pluginConfig.MsgPrefix} {_plugin.pluginConfig.MsgFspec}", 10, Broadcast.BroadcastFlags.Normal, true);
 
             _afkCount++;
             ResetAfkCounter();
@@ -143,7 +143,7 @@ namespace UltimateAFK.player
             toReplaceWith.ClearInventory();
             toReplaceWith.Position = Position;
             toReplaceWith.Rotation = Rotation;
-            toReplaceWith.PBroadcast($"{_plugin.pluginConfig.MsgPrefix} {_plugin.pluginConfig.MsgReplace}", 10, true);
+            toReplaceWith.SendBroadcast($"{_plugin.pluginConfig.MsgPrefix} {_plugin.pluginConfig.MsgReplace}", 10, Broadcast.BroadcastFlags.Normal, true);
 
             var replacedInventory = toReplaceWith.ReferenceHub.inventory;
 

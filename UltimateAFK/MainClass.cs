@@ -19,7 +19,7 @@ namespace UltimateAFK
         void LoadUAFK()
         {
             _playerFactory = new UAFKPlayerFactory(this);
-            Log.Info("Loading TestPlugin");
+            Log.Info("Loading Ultimate AFK");
             
             EventManager.RegisterEvents(this);
             FactoryManager.RegisterPlayerFactory(this, _playerFactory);

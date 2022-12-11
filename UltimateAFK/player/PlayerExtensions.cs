@@ -18,14 +18,4 @@ public static class PlayerExtensions
             inv.ServerRemoveItem(inv.UserInventory.Items.ElementAt<KeyValuePair<ushort, ItemBase>>(0).Key, null);
         inv.UserInventory.ReserveAmmo.Clear();
     }
-
-    
-    [Obsolete("Marking this obselete, so in the future then Server.Instance NRE is fixed, this is no longer needed.")]
-    public static void PBroadcast(this Player player, string text, ushort duration, bool force = false)
-    {
-        var instance = Broadcast.Singleton;
-        if (force) instance.TargetClearElements(player.ReferenceHub.connectionToClient);
-        
-        instance.TargetAddElement(player.ReferenceHub.connectionToClient, text, duration, Broadcast.BroadcastFlags.Normal);
-    }
 }
