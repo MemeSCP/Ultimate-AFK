@@ -1,7 +1,7 @@
 using System.Linq;
 using InventorySystem;
-using PlayableScps;
 using PlayerRoles;
+using PlayerRoles.PlayableScps.Scp096;
 using PluginAPI.Core;
 using PluginAPI.Core.Interfaces;
 using UnityEngine;
@@ -10,21 +10,19 @@ namespace UltimateAFK.player
 {
     public class UAFKPlayer : Player
     {
-        private readonly IGameComponent _player;
         private readonly MainClass _plugin;
         
-        private int _afkTime = 0;
-        private int _afkCount = 0;
+        private int _afkTime;
+        private int _afkCount;
 
         private float _periodicity = 1.0f;
-        private float _timer = 0.0f;
+        private float _timer;
 
         private Vector3 _lastAngle = Vector3.zero;
         private Vector3 _lastPos = Vector3.zero;
 
         public UAFKPlayer(IGameComponent player, MainClass plugin) : base(player)
         {
-            _player = player;
             _plugin = plugin;
             
             Log.Debug("UAFK Player Created.");
@@ -61,9 +59,9 @@ namespace UltimateAFK.player
                         ResetAfkCounter();
                     break;
                 case RoleTypeId.Scp096:
-                    var controller96 = ReferenceHub.scpsController.CurrentScp as Scp096;
+                    var controller96 = ReferenceHub.roleManager.CurrentRole as Scp096Role;
                     
-                    if (controller96 != null && controller96.PlayerState == Scp096PlayerState.TryNotToCry)
+                    if (controller96 != null && controller96.StateController.AbilityState == Scp096AbilityState.TryingNotToCry)
                         ResetAfkCounter();
                     else
                     {
@@ -106,7 +104,7 @@ namespace UltimateAFK.player
             
             this.ClearInventory();
             SetRole(RoleTypeId.Spectator);
-            this.SendBroadcast($"{_plugin.pluginConfig.MsgPrefix} {_plugin.pluginConfig.MsgFspec}", 10, Broadcast.BroadcastFlags.Normal, true);
+            SendBroadcast($"{_plugin.pluginConfig.MsgPrefix} {_plugin.pluginConfig.MsgFspec}", 10, Broadcast.BroadcastFlags.Normal, true);
 
             _afkCount++;
             ResetAfkCounter();
@@ -154,7 +152,7 @@ namespace UltimateAFK.player
 
             foreach (var itemPair in items)
             {
-                replacedInventory.ServerAddItem(itemPair.Value.ItemTypeId, itemPair.Key, null);
+                replacedInventory.ServerAddItem(itemPair.Value.ItemTypeId, itemPair.Key);
             }
         }
 

@@ -16,15 +16,6 @@ namespace UltimateAFK.player
         
         public override Type BaseType { get; } = typeof(UAFKPlayer);
 
-        public override IPlayer Create(IGameComponent component)
-        {
-            //TODO: Remove when NWAPI calls Server constructor
-            if (((ReferenceHub) component).isLocalPlayer)
-            {
-                new Server(component);
-            }
-
-            return new UAFKPlayer(component, _plugin);
-        }
+        public override IPlayer Create(IGameComponent component) => new UAFKPlayer(component, _plugin);
     }
 }

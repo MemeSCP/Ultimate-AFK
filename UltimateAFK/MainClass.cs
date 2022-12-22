@@ -15,7 +15,7 @@ namespace UltimateAFK
         private UAFKPlayerFactory _playerFactory;
         [PluginConfig] public Config pluginConfig;
 
-        [PluginEntryPoint("Ultimate AFK", "2.0.0", "Anti AFK System", "Sqbika")]
+        [PluginEntryPoint("Ultimate AFK", "2.0.1", "Anti AFK System", "Sqbika")]
         void LoadUAFK()
         {
             _playerFactory = new UAFKPlayerFactory(this);
@@ -26,7 +26,6 @@ namespace UltimateAFK
 
             if (pluginConfig.EnableDebugLog)
             {
-                Log.DebugMode = true;
                 Log.Debug("Debug mode enabled.");
             }
         }
