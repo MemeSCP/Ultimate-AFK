@@ -25,7 +25,8 @@ namespace UltimateAFK.player
         {
             _plugin = plugin;
             
-            Log.Debug("UAFK Player Created.");
+            if (_plugin.pluginConfig.EnableDebugLog)
+                Log.Debug("UAFK Player Created.");
         }
 
         public void ResetAfkCounter()
@@ -46,7 +47,8 @@ namespace UltimateAFK.player
 
             _timer = 0;
             
-            Log.Debug($"OnUpdate - {Nickname} - {_afkTime} - {(IsExcludedFromCheck() ? "yes" : "no")}");
+            if (_plugin.pluginConfig.EnableDebugLog)
+                Log.Debug($"OnUpdate - {Nickname} - {_afkTime} - {(IsExcludedFromCheck() ? "yes" : "no")}");
 
             if (IsExcludedFromCheck()) return;
 
@@ -73,8 +75,10 @@ namespace UltimateAFK.player
 
                     break;
                 default:
-                    Log.Debug($"{Position} / {_lastPos} / {Position.Equals(_lastPos)}");
-                    Log.Debug($"{Rotation} / {_lastAngle} / {Rotation.Equals(_lastAngle)}");
+                    if (_plugin.pluginConfig.EnableDebugLog)
+                        Log.Debug($"{Position} / {_lastPos} / {Position.Equals(_lastPos)}");
+                    if (_plugin.pluginConfig.EnableDebugLog)
+                        Log.Debug($"{Rotation} / {_lastAngle} / {Rotation.Equals(_lastAngle)}");
                     if (Position.Equals(_lastPos) && Rotation.Equals(_lastAngle))
                         _afkTime++;
                     else

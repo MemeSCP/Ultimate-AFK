@@ -15,7 +15,7 @@ namespace UltimateAFK
         private UAFKPlayerFactory _playerFactory;
         [PluginConfig] public Config pluginConfig;
 
-        [PluginEntryPoint("Ultimate AFK", "2.0.1", "Anti AFK System", "Sqbika")]
+        [PluginEntryPoint("Ultimate AFK", "2.0.1", "Anti AFK System", "MemeSCP Community")]
         void LoadUAFK()
         {
             _playerFactory = new UAFKPlayerFactory(this);
