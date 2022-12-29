@@ -31,6 +31,9 @@ namespace UltimateAFK.player
 
         public void ResetAfkCounter()
         {
+            //At server restart, the RefHub is null, but the Obj is not...
+            if (ReferenceHub == null) return;
+            
             _afkTime = 0;
             _lastAngle = Rotation;
             _lastPos = Position;
