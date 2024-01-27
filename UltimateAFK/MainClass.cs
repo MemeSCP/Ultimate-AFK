@@ -31,18 +31,18 @@ namespace UltimateAFK
         }
 
         [PluginEvent(ServerEventType.PlayerSpawn)]
-        void OnPlayerSpawn(UAFKPlayer player, RoleTypeId roleType) => player.ResetAfkCounter();
+        void OnPlayerSpawn(Player player, RoleTypeId roleType) => player.ResetAfkCounter();
 
         [PluginEvent(ServerEventType.PlayerUseHotkey)]
-        void OnPlayerHotkey(UAFKPlayer player, ActionName action) => player.ResetAfkCounter();
+        void OnPlayerHotkey(Player player, ActionName action) => player.ResetAfkCounter();
 
         [PluginEvent(ServerEventType.PlayerMakeNoise)]
-        void OnPlayerNoise(UAFKPlayer player) => player.ResetAfkCounter();
+        void OnPlayerNoise(Player player) => player.ResetAfkCounter();
 
         [PluginEvent(ServerEventType.PlayerAimWeapon)]
-        void OnPlayerAim(UAFKPlayer player, Firearm gun, bool isAiming) => player.ResetAfkCounter();
+        void OnPlayerAim(Player player, Firearm gun, bool isAiming) => player.ResetAfkCounter();
 
         [PluginEvent(ServerEventType.PlayerChangeItem)]
-        void OnPlayerChangeItem(UAFKPlayer player, ushort oldItem, ushort newItem) => player.ResetAfkCounter();
+        void OnPlayerChangeItem(Player player, ushort oldItem, ushort newItem) => player.ResetAfkCounter();
     }
 }

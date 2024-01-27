@@ -18,4 +18,10 @@ public static class PlayerExtensions
             inv.ServerRemoveItem(inv.UserInventory.Items.ElementAt<KeyValuePair<ushort, ItemBase>>(0).Key, null);
         inv.UserInventory.ReserveAmmo.Clear();
     }
+
+    public static void ResetAfkCounter(this Player player)
+    {
+        Player.TryGet(player.ReferenceHub, out UAFKPlayer uafkPlayer);
+        uafkPlayer.ResetAfkCounter();
+    }
 }
