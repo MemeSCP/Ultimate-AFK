@@ -55,6 +55,13 @@ namespace UltimateAFK.player
 
             if (IsExcludedFromCheck()) return;
 
+            var refHub = ReferenceHub.roleManager.CurrentRole;
+
+            if (refHub is Scp096Role)
+            {
+                
+            }
+
             switch (Role)
             {
                 case RoleTypeId.Scp079:
@@ -63,29 +70,20 @@ namespace UltimateAFK.player
                     else
                         ResetAfkCounter();
                     break;
-                case RoleTypeId.Scp096:
-                    var controller96 = ReferenceHub.roleManager.CurrentRole as Scp096Role;
-                    
-                    if (controller96 != null && controller96.StateController.AbilityState == Scp096AbilityState.TryingNotToCry)
-                        ResetAfkCounter();
-                    else
-                    {
-                        if (Position.Equals(_lastPos) && Rotation.Equals(_lastAngle))
-                            _afkTime++;
-                        else
-                            ResetAfkCounter();
-                    }
-
-                    break;
                 default:
                     if (_plugin.pluginConfig.EnableDebugLog)
+                    {
                         Log.Debug($"{Position} / {_lastPos} / {Position.Equals(_lastPos)}");
-                    if (_plugin.pluginConfig.EnableDebugLog)
                         Log.Debug($"{Rotation} / {_lastAngle} / {Rotation.Equals(_lastAngle)}");
-                    if (Position.Equals(_lastPos) && Rotation.Equals(_lastAngle))
+                    }
+
+                    if (Position.Equals(_lastPos) && Rotation.Equals(_lastAngle)) {
                         _afkTime++;
+                    }
                     else
+                    {
                         ResetAfkCounter();
+                    }
                     break;
             }
 
@@ -134,7 +132,7 @@ namespace UltimateAFK.player
                 toReplaceWith == this
             )
             {
-                //If we didn't find a good condidate 5 times, just skip it.
+                //If we didn't find a good candidate 5 times, just skip it.
                 if (trying > 4) return;
                 
                 trying++;

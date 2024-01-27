@@ -2,29 +2,32 @@
 <Project Sdk="Microsoft.NET.Sdk">
   
   <PropertyGroup>
-    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-    <TargetFramework>net4.8</TargetFramework>
-    <LangVersion>latestmajor</LangVersion>
-    <Nullable>enable</Nullable>
+    <TargetFramework>net48</TargetFramework>
+    <PlatformTarget>x64</PlatformTarget>
+    <OutputType>Library</OutputType>
+    <LangVersion>latest</LangVersion>
   </PropertyGroup>
 
   <PropertyGroup>
-    <OutputType>Library</OutputType>
-    <AssemblyName>UltimateAFK</AssemblyName>
-    <TargetFramework>net4.8</TargetFramework>
+    <!-- Disable automatic generation of version attribute -->
+    <GenerateAssemblyInformationalVersionAttribute>false</GenerateAssemblyInformationalVersionAttribute>
+    <GenerateAssemblyFileVersionAttribute>false</GenerateAssemblyFileVersionAttribute>
+    <GenerateAssemblyVersionAttribute>false</GenerateAssemblyVersionAttribute>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Newtonsoft.Json" Version="13.0.2" />
-    <PackageReference Include="Northwood.PluginAPI" Version="12.0.0-rc.5" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+    <PackageReference Include="Northwood.PluginAPI" Version="13.1.2" />
   </ItemGroup>
 
   <ItemGroup>
-    <!--If you see ..\..\SCPSL_DATA, blame Rider that doesn't allow backslash in EnvVars--> 
-    <Reference Include="Assembly-CSharp" HintPath="..\..\SCPSL_DATA\Assembly-CSharp.dll" Private="false" />
-    <Reference Include="CommandSystem.Core" HintPath="..\..\SCPSL_DATA\CommandSystem.Core.dll" Private="false" />
-    <Reference Include="Mirror" HintPath="..\..\SCPSL_DATA\Mirror.dll" Private="false" />
-    <Reference Include="UnityEngine" HintPath="..\..\SCPSL_DATA\UnityEngine.dll" Private="false" />
-    <Reference Include="UnityEngine.CoreModule" HintPath="..\..\SCPSL_DATA\UnityEngine.CoreModule.dll" Private="false" />
+    <!--If you see ..\..\SCPSL_DATA, blame Rider that doesn't allow backslash in EnvVars-->     
+    <Reference Include="Assembly-CSharp" HintPath="$(SL_REFERENCES)\Assembly-CSharp.dll" />
+    <Reference Include="CommandSystem.Core" HintPath="$(SL_REFERENCES)\CommandSystem.Core.dll" />
+    <Reference Include="Mirror" HintPath="$(SL_REFERENCES)\Mirror.dll" />
+    <Reference Include="Pooling" HintPath="$(SL_REFERENCES)\Pooling.dll" Private="false" />
+    <Reference Include="NorthwoodLib" HintPath="$(SL_REFERENCES)\NorthwoodLib.dll" />
+    <Reference Include="UnityEngine" HintPath="$(SL_REFERENCES)\UnityEngine.dll" />
+    <Reference Include="UnityEngine.CoreModule" HintPath="$(SL_REFERENCES)\UnityEngine.CoreModule.dll" />
   </ItemGroup>
 </Project>

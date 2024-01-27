@@ -16,6 +16,6 @@ namespace UltimateAFK.player
         
         public override Type BaseType { get; } = typeof(UAFKPlayer);
 
-        public override IPlayer Create(IGameComponent component) => new UAFKPlayer(component, _plugin);
+        public override Player Create(IGameComponent component) => new UAFKPlayer(component, _plugin);
     }
 }
