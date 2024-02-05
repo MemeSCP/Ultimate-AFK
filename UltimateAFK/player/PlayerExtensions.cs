@@ -21,7 +21,10 @@ public static class PlayerExtensions
 
     public static void ResetAfkCounter(this Player player)
     {
+        if (player.IsServer || !player.IsAlive)
+            return;
+        
         Player.TryGet(player.ReferenceHub, out UAFKPlayer uafkPlayer);
-        uafkPlayer.ResetAfkCounter();
+        uafkPlayer?.ResetAfkCounter();
     }
 }

@@ -44,6 +44,8 @@ namespace UltimateAFK.player
             base.OnUpdate();
 
             if (IsServer) return;
+            
+            if (IsExcludedFromCheck()) return;
 
             _timer += Time.deltaTime;
             if (_timer < _periodicity) return;
@@ -53,7 +55,6 @@ namespace UltimateAFK.player
             if (_plugin.pluginConfig.EnableDebugLog)
                 Log.Debug($"OnUpdate - {Nickname} - {_afkTime} - {(IsExcludedFromCheck() ? "yes" : "no")}");
 
-            if (IsExcludedFromCheck()) return;
 
             var refHub = ReferenceHub.roleManager.CurrentRole;
 
@@ -164,7 +165,7 @@ namespace UltimateAFK.player
         private bool IsExcludedFromCheck()
         {
             return
-                Role is RoleTypeId.None or RoleTypeId.Spectator ||
+                Role is RoleTypeId.None or RoleTypeId.Spectator or RoleTypeId.Filmmaker or RoleTypeId.Overwatch ||
                 GetPlayers<UAFKPlayer>().Count < _plugin.pluginConfig.MinPlayers ||
                 _plugin.pluginConfig.IgnoreTut && Role == RoleTypeId.Tutorial;
         }
