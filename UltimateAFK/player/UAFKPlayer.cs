@@ -1,9 +1,11 @@
 using System.Linq;
 using InventorySystem;
 using PlayerRoles;
+using PlayerRoles.PlayableScps.Scp079;
 using PlayerRoles.PlayableScps.Scp096;
 using PluginAPI.Core;
 using PluginAPI.Core.Interfaces;
+using PluginAPI.Roles;
 using UnityEngine;
 
 namespace UltimateAFK.player
@@ -21,22 +23,27 @@ namespace UltimateAFK.player
         private Vector3 _lastAngle = Vector3.zero;
         private Vector3 _lastPos = Vector3.zero;
 
+        private bool _shouldDebugLog = false;
+
         public UAFKPlayer(IGameComponent player, MainClass plugin) : base(player)
         {
             _plugin = plugin;
-            
-            if (_plugin.pluginConfig.EnableDebugLog)
+
+            if (_plugin.pluginConfig.EnableDebugLog && (_plugin.pluginConfig.DebugFilter.IsEmpty() || _plugin.pluginConfig.DebugFilter.Contains(UserId)))
+            {
+                _shouldDebugLog = true;
                 Log.Debug("UAFK Player Created.");
+            }
         }
 
-        public void ResetAfkCounter()
+        public void ResetAfkCounter(Vector3? position = null, Vector3? rotation = null)
         {
             //At server restart, the RefHub is null, but the Obj is not...
             if (ReferenceHub == null) return;
             
             _afkTime = 0;
-            _lastAngle = Rotation;
-            _lastPos = Position;
+            _lastAngle = rotation ?? Rotation;
+            _lastPos = position ?? Position;
         }
 
         public override void OnUpdate()
@@ -52,40 +59,45 @@ namespace UltimateAFK.player
 
             _timer = 0;
             
-            if (_plugin.pluginConfig.EnableDebugLog)
-                Log.Debug($"OnUpdate - {Nickname} - {_afkTime} - {(IsExcludedFromCheck() ? "yes" : "no")}");
+            if (_shouldDebugLog)
+                Log.Debug($"OnUpdate - {Nickname} - {_afkTime}/{_plugin.pluginConfig.AfkTime} - {Role}");
+            
+            if (ReferenceHub.roleManager.CurrentRole is Scp079Role sevenNineRole)
+            {
+                var camera = sevenNineRole.CurrentCamera;
+                var position = camera.CameraPosition;
+                var rotation = new Vector3(camera.HorizontalRotation, camera.VerticalRotation, camera.RollRotation);
+                
+                if (_shouldDebugLog)
+                {
+                    Log.Debug($"[UAFK] 079 - {position} / {_lastPos} / {position.Equals(_lastPos)}");
+                    Log.Debug($"[UAFK] - {rotation} / {_lastAngle} / {rotation.Equals(_lastAngle)}");
+                }
 
-
-            var refHub = ReferenceHub.roleManager.CurrentRole;
-
-            if (refHub is Scp096Role)
+                if (position.Equals(_lastPos) && rotation.Equals(_lastAngle)) {
+                    _afkTime++;
+                }
+                else
+                {
+                    ResetAfkCounter(position, rotation);
+                }
+            }
+            else
             {
                 
-            }
+                if (_shouldDebugLog)
+                {
+                    Log.Debug($"[UAFK] - {Position} / {_lastPos} / {Position.Equals(_lastPos)}");
+                    Log.Debug($"[UAFK] - {Rotation} / {_lastAngle} / {Rotation.Equals(_lastAngle)}");
+                }
 
-            switch (Role)
-            {
-                case RoleTypeId.Scp079:
-                    if (Camera.position.Equals(_lastPos) && Camera.eulerAngles.Equals(_lastAngle))
-                        _afkTime++;
-                    else
-                        ResetAfkCounter();
-                    break;
-                default:
-                    if (_plugin.pluginConfig.EnableDebugLog)
-                    {
-                        Log.Debug($"{Position} / {_lastPos} / {Position.Equals(_lastPos)}");
-                        Log.Debug($"{Rotation} / {_lastAngle} / {Rotation.Equals(_lastAngle)}");
-                    }
-
-                    if (Position.Equals(_lastPos) && Rotation.Equals(_lastAngle)) {
-                        _afkTime++;
-                    }
-                    else
-                    {
-                        ResetAfkCounter();
-                    }
-                    break;
+                if (Position.Equals(_lastPos) && Rotation.Equals(_lastAngle)) {
+                    _afkTime++;
+                }
+                else
+                {
+                    ResetAfkCounter();
+                }
             }
 
             if (_afkTime == 0 || _afkTime < _plugin.pluginConfig.AfkTime) return;
@@ -106,6 +118,11 @@ namespace UltimateAFK.player
 
         private void HandleReplacement()
         {
+            if (_shouldDebugLog)
+            {
+                Log.Debug($"[UAFK] - Replacing {Nickname}");
+            }
+            
             if (ShouldReplace()) FindAndSpawnReplacement();
             
             this.ClearInventory();

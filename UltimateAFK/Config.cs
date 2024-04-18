@@ -30,5 +30,8 @@
 
         [Description("Wanna log some detailed stuff why not worky work? Lots of stuff,  be cautious!")]
         public bool EnableDebugLog { get; private set; } = false;
+
+        [Description("Filters down the users, whom should be debugged")]
+        public string[] DebugFilter { get; private set; } = {};
     }
 }
